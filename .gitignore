@@ -18,3 +18,4 @@ bin/
 
 ### Runtime stuff ###
 logs/
+/.nb-gradle/

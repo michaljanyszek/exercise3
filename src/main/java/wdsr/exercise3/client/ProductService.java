@@ -1,11 +1,16 @@
 package wdsr.exercise3.client;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import wdsr.exercise3.model.Product;
 import wdsr.exercise3.model.ProductType;
@@ -21,8 +26,16 @@ public class ProductService extends RestClientBase {
 	 * @return A list of found products - possibly empty, never null.
 	 */
 	public List<Product> retrieveProducts(Set<ProductType> types) {
-		// TODO
-		return null;
+        List<Product> productList = new ArrayList<> ();
+        WebTarget statusTarget;
+        ObjectMapper objMap = new ObjectMapper();
+        for(ProductType productType : types){
+            statusTarget = baseTarget.path("/products?type=" + productType);
+            Response response = statusTarget.request(MediaType.APPLICATION_JSON).get();
+            Product product = objMap.readValue(response.readEntity(String.class), Product.class);
+            productList.add(product);
+        }
+        return productList;
 	}
 	
 	/**
@@ -30,8 +43,9 @@ public class ProductService extends RestClientBase {
 	 * @return A list of all products - possibly empty, never null.
 	 */
 	public List<Product> retrieveAllProducts() {
-		// TODO
-		return null;
+		List<Product> productList = new ArrayList<> ();
+                
+		return productList;
 	}
 	
 	/**
